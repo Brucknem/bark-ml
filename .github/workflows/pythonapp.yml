@@ -21,11 +21,10 @@ jobs:
     - name: Install virtualenv
       run: pip3 install virtualenv==16.7.8
     - name: Create virtual environment
-      run: |
-        pwd
-        chmod +x install.sh
-        . ./install.sh
-    - name: Entering the virtual python environment..
-      run: source dev_into.sh
+      run: virtualenv -p python3.7 ./python/venv        
+    - name: Entering the virtual python environment
+      run: . ./python/venv/bin/activate
+    - name: Installing requirements
+      run: pip3.7 install --no-cache-dir --upgrade --trusted-host pypi.org -r utils/requirements.txt
     - name: Runing bazel tests..
       run: bazel test //...
