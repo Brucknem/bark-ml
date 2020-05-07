@@ -20,11 +20,11 @@ jobs:
       run: sudo apt-get install python3.7 python3.7-dev python3.7-tk
     - name: Install virtualenv
       run: pip3 install virtualenv==16.7.8
-    - name: Setting up virtual environment
+    - name: Create virtual environment
       run: |
-        ls
+        pwd
         chmod +x install.sh
-        ./install.sh
+        . ./install.sh
     - name: Entering the virtual python environment..
       run: source dev_into.sh
     - name: Runing bazel tests..
