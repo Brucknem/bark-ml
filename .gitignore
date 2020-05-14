@@ -164,6 +164,6 @@ web/node_modules
 .vscode/.vs_code_bazel_build/BUILD
 tests/data/database_maps_DR_DEU_Merging_MT_shifted.xodr
 *.png
-!docs/*.png
+!docs/**/*.png
 *.p
 
