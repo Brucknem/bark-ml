@@ -5,21 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-        "name": "Python: Highway Configuration",
-        "type": "python",
-        "request": "launch",
-        "program": "${workspaceFolder}/configurations/highway/configuration.py",
-        "console": "integratedTerminal",
-        "env": {
-                "PYTHONPATH": "${workspaceFolder}/bazel-bin/configurations/highway/configuration.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/configurations/highway/configuration.runfiles/bark_project:${workspaceFolder}/bazel-bin/configurations/highway/configuration.runfiles/bark_ml"
-         }
-        },
-        {
-            "name": "Python: Current File",
+            "name": "Python: Highway Configuration",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "program": "${workspaceFolder}/configurations/highway/configuration.py",
+            "console": "integratedTerminal",
+            "env": 
+                {
+                    "PYTHONPATH": "${workspaceFolder}/bazel-bin/configurations/highway/configuration.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/configurations/highway/configuration.runfiles/bark_project:${workspaceFolder}/bazel-bin/configurations/highway/configuration.runfiles/bark_ml"
+                }
         }
     ]
 }
