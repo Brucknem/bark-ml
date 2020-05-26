@@ -7,7 +7,7 @@
 # TensorFlow Agents (https://github.com/tensorflow/agents) example
 import os
 from pathlib import Path
-base_path = os.path.join(Path.home(), '.bark-ml', '.tfa')
+base_path = os.path.join(Path.home(), '.bark-ml', '.gail')
 checkpoints_path = os.path.join(base_path, 'checkpoints')
 summaries_path = os.path.join(base_path, 'summaries')
 Path(checkpoints_path).mkdir(exist_ok=True, parents=True)
@@ -26,8 +26,8 @@ from modules.runtime.viewer.video_renderer import VideoRenderer
 from bark_ml.environments.blueprints import ContinuousHighwayBlueprint, \
   ContinuousMergingBlueprint, ContinuousIntersectionBlueprint
 from bark_ml.environments.single_agent_runtime import SingleAgentRuntime
-from bark_ml.library_wrappers.lib_tf_agents.agents import BehaviorSACAgent, BehaviorPPOAgent
-from bark_ml.library_wrappers.lib_tf_agents.runners import SACRunner, PPORunner
+from bark_ml.library_wrappers.lib_tf_agents.agents import BehaviorGAILAgent
+from bark_ml.library_wrappers.lib_tf_agents.runners import GAILRunner
 
 
 FLAGS = flags.FLAGS
@@ -52,21 +52,13 @@ def run_configuration(argv):
   env = SingleAgentRuntime(blueprint=bp,
                            render=False)
 
-  # PPO-agent
-  # ppo_agent = BehaviorPPOAgent(environment=env,
-  #                              params=params)
-  # env.ml_behavior = ppo_agent
-  # runner = PPORunner(params=params,
-  #                    environment=env,
-  #                    agent=ppo_agent)
-
-  # SAC-agent
-  sac_agent = BehaviorSACAgent(environment=env,
+  # GAIL-agent
+  gail_agent = BehaviorGAILAgent(environment=env,
                                params=params)
-  env.ml_behavior = sac_agent
-  runner = SACRunner(params=params,
+  env.ml_behavior = gail_agent
+  runner = GAILRunner(params=params,
                      environment=env,
-                     agent=sac_agent)
+                     agent=gail_agent)
 
   if FLAGS.mode == "train":
     runner.Train()
