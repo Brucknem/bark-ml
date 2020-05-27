@@ -24,7 +24,7 @@
 			"20000",
 			//"--show-test-images",
 			"--save-test-movie"
-		]
+		] 
 	},
 	{
 		"name": "Python: Current File",
