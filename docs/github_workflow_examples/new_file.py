@@ -1,6 +1,9 @@
 # Python Program to find the L.C.M. of two input number
 
 def compute_lcm(x, y):
+   '''
+   This function computes the lcm for two given numbers.
+   '''
 
    # choose the greater number
    if x > y:
