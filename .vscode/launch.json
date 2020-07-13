@@ -5,6 +5,16 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "Python: examples/Evaluation/Benchmarking",
+			"type": "python",
+			"request": "launch",
+			"program": "${workspaceFolder}/examples/Evaluation/Benchmarking.py",
+			"console": "integratedTerminal",
+			"env": {
+				"PYTHONPATH": "${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/:${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/bark_project/:${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/com_github_interaction_dataset_interaction_dataset/python/:${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/com_github_keiohta_tf2rl:${workspaceFolder}/bazel-bin/examples/Evaluation/Benchmarking.runfiles/benchmark_database"
+			}
+		},	
+		{
 			"name": "Python: bark_ml/tests/py_library_tf2rl_tests/py_gail_gym_training_tests",
 			"type": "python",
 			"request": "launch",
