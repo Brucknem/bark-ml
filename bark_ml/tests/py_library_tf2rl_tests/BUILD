@@ -25,6 +25,14 @@ py_test(
     size = "small"
 )
 
+py_test(
+    name = "trajectories_compare_test",
+    srcs = ["trajectories_compare_test.py"],
+    deps = [
+            "//bark_ml/library_wrappers/lib_tf2rl:trajectories_compare"],
+    visibility = ["//visibility:public"],
+    size = "small"
+)
 
 py_test(
     name = "base_tests",

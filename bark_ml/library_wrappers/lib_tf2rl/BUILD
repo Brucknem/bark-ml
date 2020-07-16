@@ -24,8 +24,11 @@ py_library(
     name = "load_expert_trajectories",
     srcs = [
       "load_expert_trajectories.py",
-      "load_save_utils.py"
           ],
+    deps = [
+            "@com_github_keiohta_tf2rl",
+            ":load_save_utils"
+            ],
     visibility = ["//visibility:public"]
 )
 
@@ -34,6 +37,14 @@ py_library(
   srcs = ["load_save_utils.py"],
   visibility = ["//visibility:public"]
 )
+
+py_library(
+    name = "trajectories_compare",
+    srcs = ["trajectories_compare.py"],
+    deps = [":load_expert_trajectories"],
+    visibility = ["//visibility:public"],
+)
+
 
 py_binary(
   name = "generate_expert_trajectories",
