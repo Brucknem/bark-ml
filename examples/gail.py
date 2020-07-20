@@ -17,7 +17,7 @@ from bark_ml.environments.single_agent_runtime import SingleAgentRuntime
 from bark_ml.library_wrappers.lib_tf2rl.tf2rl_wrapper import TF2RLWrapper
 from bark_ml.library_wrappers.lib_tf2rl.agents.gail_agent import BehaviorGAILAgent
 from bark_ml.library_wrappers.lib_tf2rl.runners.gail_runner import GAILRunner
-from bark_ml.library_wrappers.lib_tf2rl.load_expert_trajectories import load_expert_trajectories
+from bark_ml.library_wrappers.lib_tf2rl.load_expert_trajectories import load_expert_trajectories_dir
 
 
 FLAGS = flags.FLAGS
@@ -69,7 +69,7 @@ def run_configuration(argv):
   gail_agent = BehaviorGAILAgent(environment=wrapped_env,
                                params=params)
 
-  expert_trajectories = load_expert_trajectories(FLAGS.expert_trajectories,
+  expert_trajectories = load_expert_trajectories_dir(FLAGS.expert_trajectories,
     normalize_features=params["ML"]["Settings"]["NormalizeFeatures"],
     env=env # the unwrapped env has to be used, since that contains the unnormalized spaces.
     ) 

@@ -27,7 +27,7 @@ class TF2RLWrapper():
         """
         if self._normalize_features:
             rescaled_action = self._rescale_action(action)
-            next_obs, reward, done, _ = self._env.step(rescaled_action)
+            next_obs, reward, done, info = self._env.step(rescaled_action)
             next_obs = self._normalize_observation(next_obs)
             return next_obs, reward, done, None
         else:

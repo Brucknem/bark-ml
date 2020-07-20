@@ -24,11 +24,11 @@ class LoadExpertTrajectoriesTest(unittest.TestCase):
         self.params = ParameterServer(filename=os.path.join(os.path.dirname(__file__), "gail_data/params/gail_params_bark.json"))
         self.expert_trajectories_directory = os.path.join(os.path.dirname(__file__), 'data', 'expert_trajectories')
         
-        self.expert_trajectories = load_expert_trajectories(
+        self.expert_trajectories = load_expert_trajectories_dir(
             self.expert_trajectories_directory)
 
         env = test_env(self.params)
-        self.expert_trajectories_norm = load_expert_trajectories(
+        self.expert_trajectories_norm = load_expert_trajectories_dir(
             self.expert_trajectories_directory,
             normalize_features=True,
             env=env)
@@ -41,7 +41,7 @@ class LoadExpertTrajectoriesTest(unittest.TestCase):
         Test: Assert that a non existent file raises an error.
         """
         with self.assertRaises(AssertionError):
-            load_expert_trajectories('/tmp/')
+            load_expert_trajectories_dir('/tmp/')
 
     def test_file_contains_expert_trajectories(self):
         """
@@ -50,7 +50,7 @@ class LoadExpertTrajectoriesTest(unittest.TestCase):
         """
         file_path = os.path.join(os.path.dirname(__file__), 'data', 'invalid_file.jblb')
         with self.assertRaises(KeyError):
-            load_expert_trajectories(os.path.dirname(file_path))
+            load_expert_trajectories_dir(os.path.dirname(file_path))
 
     def test_normalized_trajectories(self):
         """Tests whether all the expert trajectories are in the range of -1 and 1"""

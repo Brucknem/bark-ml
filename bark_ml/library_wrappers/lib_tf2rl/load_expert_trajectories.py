@@ -6,7 +6,7 @@ from typing import Tuple
 from bark_ml.library_wrappers.lib_tf2rl.load_save_utils import *
 from tf2rl.experiments.utils import load_trajectories
 
-def load_expert_trajectories(dirname: str, normalize_features=False, env=None) -> dict:
+def load_expert_trajectories_dir(dirname: str, normalize_features=False, env=None) -> dict:
     """Loads all found expert trajectories files in the directory.
 
     Args:
@@ -18,7 +18,21 @@ def load_expert_trajectories(dirname: str, normalize_features=False, env=None) -
     Returns:
         dict: The expert trajectories in tf2rl format: {'obs': [], 'next_obs': [], 'act': []}
     """
-    joblib_files = list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb')
+    return load_expert_trajectories(
+        list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb'))
+
+def load_expert_trajectories(joblib_files: list, normalize_features=False, env=None) -> dict:
+    """Loads all given expert trajectories files.
+
+    Args:
+        joblib_files (list): The files containing the expert trajectories files
+
+    Raises:
+        ValueError: If no valid expert trajctories could be found in the given directory.
+
+    Returns:
+        dict: The expert trajectories in tf2rl format: {'obs': [], 'next_obs': [], 'act': []}
+    """
     expert_trajectories = load_trajectories(joblib_files)
 
     if normalize_features:
