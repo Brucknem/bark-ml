@@ -6,7 +6,7 @@ from typing import Tuple
 from bark_ml.library_wrappers.lib_tf2rl.load_save_utils import *
 from tf2rl.experiments.utils import load_trajectories
 
-def load_expert_trajectories_dir(dirname: str, normalize_features=False, env=None) -> dict:
+def load_expert_trajectories_dir(dirname: str, normalize_features=False, env=None) -> (dict, float, int):
     """Loads all found expert trajectories files in the directory.
 
     Args:
@@ -21,17 +21,18 @@ def load_expert_trajectories_dir(dirname: str, normalize_features=False, env=Non
     return load_expert_trajectories(
         list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb'))
 
-def load_expert_trajectories(joblib_files: list, normalize_features=False, env=None) -> dict:
+def load_expert_trajectories(joblib_files: list, normalize_features=False, env=None) -> (dict, float, int):
     """Loads all given expert trajectories files.
 
     Args:
         joblib_files (list): The files containing the expert trajectories files
 
     Raises:
-        ValueError: If no valid expert trajctories could be found in the given directory.
+        ValueError: If no valid expert trajctories could be found in the given directory
 
     Returns:
         dict: The expert trajectories in tf2rl format: {'obs': [], 'next_obs': [], 'act': []}
+        float: The average number of trajectory points
     """
     expert_trajectories = load_trajectories(joblib_files)
 
@@ -57,7 +58,7 @@ def load_expert_trajectories(joblib_files: list, normalize_features=False, env=N
     assert expert_trajectories['next_obses'].shape[1] == 16
     assert expert_trajectories['acts'].shape[1] == 2
 
-    return expert_trajectories
+    return expert_trajectories, len(expert_trajectories['obses']) / len(joblib_files), len(joblib_files)
 
 
 def normalize(features, high, low):

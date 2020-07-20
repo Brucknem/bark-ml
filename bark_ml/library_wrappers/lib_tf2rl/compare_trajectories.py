@@ -2,7 +2,7 @@ import numpy as np
 from bark_ml.library_wrappers.lib_tf2rl.load_expert_trajectories import *
 from bark_ml.library_wrappers.lib_tf2rl.load_save_utils import *
 
-needed_keys = ['obs', 'next_obs', 'act']
+needed_keys = ['obses', 'next_obses', 'acts']
 
 def calculate_norm(vectors: np.ndarray) -> float:
     """Calculates the mean of the L2 norm of the row vectors.
@@ -24,14 +24,14 @@ def compare_trajectories(first: dict, second: dict) -> dict:
     The final norms are summed.
 
     Args:
-        first (dict): The first trajectory {'obs': [], 'next_obs': [], 'act': []}
-        second (dict): The first trajectory {'obs': [], 'next_obs': [], 'act': []}
+        first (dict): The first trajectory {'obses': [], 'next_obses': [], 'acts': []}
+        second (dict): The first trajectory {'obses': [], 'next_obses': [], 'acts': []}
 
     Raises:
         ValueError: If a key is not present that identifies a trajectory.
 
     Returns:
-        dict: {'obs': float, 'next_obs': float, 'act': float}
+        dict: {'obses': float, 'next_obses': float, 'acts': float}
     """
     distances = {}
     min_length = np.inf
@@ -67,9 +67,9 @@ def calculate_mean_action(trajectories: dict) -> np.ndarray:
     Returns:
         np.ndarray: The mean action.
     """
-    if 'act' not in trajectories:
-        raise ValueError(f'Actions not found. Invalid trajectories.')
-    actions = np.array(trajectories['act'])
-    mean_action = np.linalg.norm(actions, axis=0)
+    if 'acts' not in trajectories:
+        raise ValueError(f'actions not found. Invalid trajectories.')
+    actions = np.array(trajectories['acts'])
+    mean_action = np.sum(actions, axis=0) / len(actions)
     return mean_action
     

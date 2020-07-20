@@ -27,12 +27,11 @@ flags.DEFINE_enum("mode",
 
 flags.DEFINE_string("train_out",
                   help="The absolute path to where the checkpoints and summaries are saved during training.",
-                  # default=os.path.join(Path.home(), ".bark-ml/gail")
                   default=os.path.join(Path.home(), "")
                   )
 
 flags.DEFINE_integer("gpu",
-                  help="-1 for CPU, 0 for GPU",
+                  help="-1 for CPU, else device number of GPU",
                   default=0
                   )
 
@@ -46,6 +45,7 @@ def run_configuration(argv):
   # changing the logging directories if not the default is used. (Which would be the same as it is in the json file.)
   params["ML"]["GAILRunner"]["tf2rl"]["logdir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "logs", "bark")
   params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "models", "bark")
+  params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = '/home/brucknem/Repositories/gail-4-bark/bark-ml/examples/trained_gail_agents/sac_based/20200709T164828.336159_DDPG_GAIL'
 
   Path(params["ML"]["GAILRunner"]["tf2rl"]["logdir"]).mkdir(exist_ok=True, parents=True)
   Path(params["ML"]["GAILRunner"]["tf2rl"]["model_dir"]).mkdir(exist_ok=True, parents=True)
@@ -68,7 +68,7 @@ def run_configuration(argv):
   gail_agent = BehaviorGAILAgent(environment=wrapped_env,
                                params=params)
 
-  expert_trajectories = load_expert_trajectories_dir(FLAGS.expert_trajectories,
+  expert_trajectories, avg_trajectory_length, num_trajectories = load_expert_trajectories_dir(FLAGS.expert_trajectories,
     normalize_features=params["ML"]["Settings"]["NormalizeFeatures"],
     env=env # the unwrapped env has to be used, since that contains the unnormalized spaces.
     ) 
@@ -83,7 +83,7 @@ def run_configuration(argv):
   elif FLAGS.mode == "visualize":
     runner.Visualize(20)
   elif FLAGS.mode == "evaluate":
-    runner.Evaluate()
+    runner.Evaluate(expert_trajectories, avg_trajectory_length, num_trajectories)
   
   # store all used params of the training
   # params.Save(os.path.join(FLAGS.train_out, "examples/example_params/gail_params.json"))

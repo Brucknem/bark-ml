@@ -4,6 +4,7 @@ py_library(
     ":tf2rl_wrapper",
     ":load_expert_trajectories",
     ":generate_expert_trajectories",
+    ":compare_trajectories",
     "//bark_ml/library_wrappers/lib_tf2rl/agents",
     "//bark_ml/library_wrappers/lib_tf2rl/runners",
   ],
