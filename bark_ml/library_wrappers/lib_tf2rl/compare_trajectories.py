@@ -53,3 +53,23 @@ def compare_trajectories(first: dict, second: dict) -> dict:
             distances[key] += calculate_norm(rms)
 
     return distances
+
+def calculate_mean_action(trajectories: dict) -> np.ndarray:
+    """Calculates the mean action of the given trajectories over 
+    the columns of the row vector matrix of actions.
+
+    Args:
+        trajectories (dict): The trajectories that produced the actions.
+
+    Raises:
+        ValueError: If no actions can be found in the trajectories.
+
+    Returns:
+        np.ndarray: The mean action.
+    """
+    if 'act' not in trajectories:
+        raise ValueError(f'Actions not found. Invalid trajectories.')
+    actions = np.array(trajectories['act'])
+    mean_action = np.linalg.norm(actions, axis=0)
+    return mean_action
+    

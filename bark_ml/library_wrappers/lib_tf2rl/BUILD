@@ -39,8 +39,8 @@ py_library(
 )
 
 py_library(
-    name = "trajectories_compare",
-    srcs = ["trajectories_compare.py"],
+    name = "compare_trajectories",
+    srcs = ["compare_trajectories.py"],
     deps = [":load_expert_trajectories"],
     visibility = ["//visibility:public"],
 )
