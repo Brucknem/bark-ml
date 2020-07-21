@@ -48,9 +48,9 @@ def run_configuration(argv):
   params = ParameterServer(filename="examples/example_params/gail_params.json")
   # params = ParameterServer()
   # changing the logging directories if not the default is used. (Which would be the same as it is in the json file.)
-  params["ML"]["GAILRunner"]["tf2rl"]["logdir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "logs")
-  params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "models")
-  params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = '/home/brucknem/Repositories/gail-4-bark/bark-ml/examples/trained_gail_agents/sac_based/20200709T164828.336159_DDPG_GAIL'
+  params["ML"]["GAILRunner"]["tf2rl"]["logdir"] = os.path.join(os.path.expanduser(FLAGS.train_out))
+  params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = os.path.join(os.path.expanduser(FLAGS.train_out))
+  # params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = '/home/brucknem/Repositories/gail-4-bark/bark-ml/examples/trained_gail_agents/sac_based/20200709T164828.336159_DDPG_GAIL'
 
   Path(params["ML"]["GAILRunner"]["tf2rl"]["logdir"]).mkdir(exist_ok=True, parents=True)
   Path(params["ML"]["GAILRunner"]["tf2rl"]["model_dir"]).mkdir(exist_ok=True, parents=True)
@@ -70,8 +70,7 @@ def run_configuration(argv):
     normalize_features=params["ML"]["Settings"]["NormalizeFeatures"])
 
   # GAIL-agent
-  gail_agent = BehaviorGAILAgent(environment=wrapped_env,
-                               params=params)
+  gail_agent = BehaviorGAILAgent(environment=wrapped_env, params=params)
 
   np.random.seed(0)
   expert_trajectories, avg_trajectory_length, num_trajectories = load_expert_trajectories_dir(FLAGS.expert_trajectories,
@@ -81,9 +80,9 @@ def run_configuration(argv):
     ) 
 
   runner = GAILRunner(params=params,
-                     environment=wrapped_env,
-                     agent=gail_agent,
-                     expert_trajs=expert_trajectories)
+                      environment=wrapped_env,
+                      agent=gail_agent,
+                      expert_trajs=expert_trajectories)
 
   if FLAGS.mode == "train":
     runner.Train()
