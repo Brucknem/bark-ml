@@ -3,6 +3,7 @@ from pathlib import Path
 
 from absl import app
 from absl import flags
+import numpy as np
 
 # BARK imports
 from bark_project.bark.runtime.commons.parameters import ParameterServer
@@ -39,12 +40,16 @@ flags.DEFINE_string("expert_trajectories",
                     help="The absolute path to the dir where the expert trajectories are safed.",
                     default=None)
 
+flags.DEFINE_integer("subset_size",
+                    help="The size of the subset of expert trajectories to use when training. < 0 for all",
+                    default=-1)
+
 def run_configuration(argv):
   params = ParameterServer(filename="examples/example_params/gail_params.json")
   # params = ParameterServer()
   # changing the logging directories if not the default is used. (Which would be the same as it is in the json file.)
-  params["ML"]["GAILRunner"]["tf2rl"]["logdir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "logs", "bark")
-  params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "models", "bark")
+  params["ML"]["GAILRunner"]["tf2rl"]["logdir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "logs")
+  params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = os.path.join(os.path.expanduser(FLAGS.train_out), "models")
   params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = '/home/brucknem/Repositories/gail-4-bark/bark-ml/examples/trained_gail_agents/sac_based/20200709T164828.336159_DDPG_GAIL'
 
   Path(params["ML"]["GAILRunner"]["tf2rl"]["logdir"]).mkdir(exist_ok=True, parents=True)
@@ -68,9 +73,11 @@ def run_configuration(argv):
   gail_agent = BehaviorGAILAgent(environment=wrapped_env,
                                params=params)
 
+  np.random.seed(0)
   expert_trajectories, avg_trajectory_length, num_trajectories = load_expert_trajectories_dir(FLAGS.expert_trajectories,
     normalize_features=params["ML"]["Settings"]["NormalizeFeatures"],
-    env=env # the unwrapped env has to be used, since that contains the unnormalized spaces.
+    env=env, # the unwrapped env has to be used, since that contains the unnormalized spaces.
+    subset_size=FLAGS.subset_size
     ) 
 
   runner = GAILRunner(params=params,

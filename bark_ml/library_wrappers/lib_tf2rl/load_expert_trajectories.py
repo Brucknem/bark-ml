@@ -6,7 +6,7 @@ from typing import Tuple
 from bark_ml.library_wrappers.lib_tf2rl.load_save_utils import *
 from tf2rl.experiments.utils import load_trajectories
 
-def load_expert_trajectories_dir(dirname: str, normalize_features=False, env=None) -> (dict, float, int):
+def load_expert_trajectories_dir(dirname: str, subset_size: int = -1, normalize_features=False, env=None) -> (dict, float, int):
     """Loads all found expert trajectories files in the directory.
 
     Args:
@@ -18,8 +18,11 @@ def load_expert_trajectories_dir(dirname: str, normalize_features=False, env=Non
     Returns:
         dict: The expert trajectories in tf2rl format: {'obs': [], 'next_obs': [], 'act': []}
     """
-    return load_expert_trajectories(
-        list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb'))
+    joblib_files = list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb')
+    if subset_size >= 0 and subset_size < len(joblib_files):
+        indices = np.random.choice(range(len(joblib_files)), replace=False, size=subset_size)
+        joblib_files = [joblib_files[i] for i in indices]
+    return load_expert_trajectories(joblib_files)
 
 def load_expert_trajectories(joblib_files: list, normalize_features=False, env=None) -> (dict, float, int):
     """Loads all given expert trajectories files.
@@ -54,9 +57,9 @@ def load_expert_trajectories(joblib_files: list, normalize_features=False, env=N
     assert len(expert_trajectories['obses']) == len(expert_trajectories['next_obses'])
     assert len(expert_trajectories['obses']) == len(expert_trajectories['acts'])
 
-    assert expert_trajectories['obses'].shape[1] == 16
-    assert expert_trajectories['next_obses'].shape[1] == 16
-    assert expert_trajectories['acts'].shape[1] == 2
+    assert len(expert_trajectories['obses'][0]) == 16
+    assert len(expert_trajectories['next_obses'][0]) == 16
+    assert len(expert_trajectories['acts'][0]) == 2
 
     return expert_trajectories, len(expert_trajectories['obses']) / len(joblib_files), len(joblib_files)
 

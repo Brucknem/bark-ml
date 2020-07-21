@@ -181,3 +181,4 @@ bark_ml/tests/py_library_tf2rl_tests/gail_data/models/*
 
 examples/gail/**
 examples/checkpoints/**
+examples/trained_agents**

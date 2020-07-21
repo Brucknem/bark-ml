@@ -54,7 +54,7 @@ class TF2RLRunner:
       agent_actions['acts'].extend(trajectory['act'])  
     expert_mean_action = calculate_mean_action(expert_trajectories)
     agent_mean_action = calculate_mean_action(agent_actions)
-    print('Agent meanaction: ', agent_mean_action)
+    print('Agent mean action: ', agent_mean_action)
     print('Expert mean action: ', expert_mean_action)
 
     difference = expert_mean_action - agent_mean_action
