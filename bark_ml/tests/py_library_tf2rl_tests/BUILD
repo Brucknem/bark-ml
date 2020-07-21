@@ -81,9 +81,7 @@ py_test(
     deps = [
             "//bark_ml/environments:blueprints",
             "//bark_ml/environments:single_agent_runtime",
-            "//bark_ml/library_wrappers/lib_tf2rl/runners",
-            "//bark_ml/library_wrappers/lib_tf2rl/agents",
-            "//bark_ml/library_wrappers/lib_tf2rl:tf2rl_wrapper",
+            "//bark_ml/library_wrappers/lib_tf2rl",
             "@bark_project//bark/runtime:runtime",
             ],
     tags=["no-sandbox"],
@@ -100,7 +98,7 @@ py_test(
             ],
     imports = ["../../external/bark_project/bark/python_wrapper/"],
     deps = [
-            "//bark_ml/library_wrappers/lib_tf2rl/agents",
+            "//bark_ml/library_wrappers/lib_tf2rl",
             "@bark_project//bark/runtime:runtime",
             ],
     tags=["no-sandbox"],
@@ -117,8 +115,7 @@ py_test(
             ],
     imports = ["../../external/bark_project/bark/python_wrapper/"],
     deps = [
-            "//bark_ml/library_wrappers/lib_tf2rl/runners",
-            "//bark_ml/library_wrappers/lib_tf2rl/agents",
+            "//bark_ml/library_wrappers/lib_tf2rl",
             ],
     tags=["no-sandbox"],
     visibility = ["//visibility:public"],
@@ -134,7 +131,7 @@ py_test(
             ],
     imports = ["../../external/bark_project/bark/python_wrapper/"],
     deps = [
-            "//bark_ml/library_wrappers/lib_tf2rl:tf2rl_wrapper",
+            "//bark_ml/library_wrappers/lib_tf2rl",
             ],
     visibility = ["//visibility:public"],
     size = "small",
