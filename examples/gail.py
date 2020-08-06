@@ -27,7 +27,6 @@ flags.DEFINE_enum("mode",
 
 flags.DEFINE_string("train_out",
                   help="The absolute path to where the checkpoints and summaries are saved during training.",
-                  # default=os.path.join(Path.home(), ".bark-ml/gail")
                   default=os.path.join(Path.home(), "")
                   )
 
