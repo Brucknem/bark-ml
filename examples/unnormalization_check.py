@@ -84,7 +84,7 @@ def normalize(features, high, low):
     """
     norm_features = features - low
     norm_features /= (high - low)
-    norm_features = norm_features * 2. - 1. # hat gefehlt !!!
+    #norm_features = norm_features * 2. - 1. # hat gefehlt !!!
     return norm_features
 
 def list_files_in_dir(dir_path: str, file_ending: str = '') -> list:
