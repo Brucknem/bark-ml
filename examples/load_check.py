@@ -15,7 +15,9 @@ env = SingleAgentRuntime(blueprint=bp, render=False)
 
 #dirname="/Users/Marcel/Repositories/gail-4-bark/bark-ml/examples/expert_trajectories/sac_20000_observations"
 #dirname="/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajectories/sac/merging"
-dirname="/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajectories/interaction_dataset/DR_DEU_Merging_MT_v01_shifted"
+#dirname="/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajectories/interaction_dataset/DR_DEU_Merging_MT_v01_shifted"
+#dirname="/Users/Marcel/Repositories/gail-4-bark/large_data_store/pretrained_agents/sac/merging_mine/expert_trajectories"
+dirname="/Users/Marcel/Repositories/gail-4-bark/large_data_store/pretrained_agents/sac/merging_mine/expert_trajectories"
 expert_trajectories, avg_trajectory_length, num_trajectories = load_expert_trajectories(dirname,
       normalize_features=True,sac=True,
       env=env, # the unwrapped env has to be used, since that contains the unnormalized spaces.
