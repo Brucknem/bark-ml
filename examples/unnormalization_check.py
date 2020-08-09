@@ -84,7 +84,7 @@ def normalize(features, high, low):
     """
     norm_features = features - low
     norm_features /= (high - low)
-    norm_features = norm_features
+    norm_features = norm_features * 2. - 1. # hat gefehlt !!!
     return norm_features
 
 def list_files_in_dir(dir_path: str, file_ending: str = '') -> list:
@@ -152,24 +152,24 @@ def store_normalized_trajectories(filenames, output_dir):
     for filename in filenames:
         head, tail = os.path.split(filename)
         unnormalized_traj=joblib.load(filename)
-        normalized_traj={'obs':[], 'act':[]}
+        normalized_traj={}
         normalized_traj['obs']=unnormalized_traj['obs_norm']
         normalized_traj['act']=unnormalized_traj['act']
         joblib.dump(normalized_traj, os.path.join(output_dir, tail))
 
 #large_data_store/expert_trajectories/sac/merging_not_normalized
-dirname="~/Repositories/bark-ml/large_data_store/expert_trajectories/sac/merging_not_normalized"
+dirname="/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajectories/sac/merging_not_normalized"
 
 joblib_files = list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb')
 
-#indices = np.random.choice(len(joblib_files), 10, replace=False)
-indices = np.arange(len(joblib_files))
+indices = np.random.choice(len(joblib_files), 10, replace=False)
+#indices = np.arange(len(joblib_files))
 joblib_files = np.array(joblib_files)[indices]
 
-#store_normalized_trajectories(joblib_files, "/home/marvin/Repositories/bark-ml/large_data_store/expert_trajectories/sac/merging_normalized")
+#store_normalized_trajectories(joblib_files, "/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajectories/sac/merging_normalized")
 
 
-#expert_trajectories = load_trajectories(joblib_files)
+expert_trajectories = load_trajectories(joblib_files)
 
 params = ParameterServer(filename="examples/example_params/gail_params.json")
 
@@ -193,14 +193,13 @@ normalize_features=params["ML"]["Settings"]["NormalizeFeatures"])
 #   print (keys)
 
 bounds = GetBounds(env)
+expert_trajectories_locally_normalized = {}
 for key in ['obses', 'next_obses']:
-    expert_trajectories[key] = normalize(features=expert_trajectories[key],
+    expert_trajectories_locally_normalized[key] = normalize(features=expert_trajectories[key],
     high=bounds[1],
     low=bounds[0]
     )
 
-print(expert_trajectories['obses'])
+diffs=expert_trajectories_locally_normalized['obses']-expert_trajectories['obses_norm']
 
-diffs=expert_trajectories['obses']-expert_trajectories['obses_norm']
-
-print(diffs)
+print('Max. difference: {}'.format(np.max(np.abs(diffs))))

@@ -73,10 +73,10 @@ def load_expert_trajectories(dirname: str, normalize_features=False, sac=False, 
             assert env is not None, "if normalization is used the environment has to be provided."
             bounds = GetBounds(env)
             for key in ['obses', 'next_obses']:
-                expert_trajectories[key] = normalize(features=expert_trajectories[key],
-                high=bounds[1],
-                low=bounds[0]
-                )
+                expert_trajectories[key] = normalize_util(
+                    feature=expert_trajectories[key],
+                    feature_space=env.observation_space
+                    )
 
             expert_trajectories['acts'] = normalize(features=expert_trajectories['acts'],
                 high=env.action_space.high,
