@@ -162,11 +162,11 @@ dirname="/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajecto
 
 joblib_files = list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb')
 
-indices = np.random.choice(len(joblib_files), 10, replace=False)
-#indices = np.arange(len(joblib_files))
+#indices = np.random.choice(len(joblib_files), 10, replace=False)
+indices = np.arange(len(joblib_files))
 joblib_files = np.array(joblib_files)[indices]
 
-#store_normalized_trajectories(joblib_files, "/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajectories/sac/merging_normalized")
+store_normalized_trajectories(joblib_files, "/Users/Marcel/Repositories/gail-4-bark/large_data_store/expert_trajectories/sac/merging_normalized")
 
 
 expert_trajectories = load_trajectories(joblib_files)
