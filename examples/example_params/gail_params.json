@@ -8,7 +8,7 @@
     "ML": {
         "Settings": {
             "GPUUse": 0,
-            "NormalizeFeatures": true,
+            "NormalizeFeatures": false,
             "SAC":true
         },
         "BehaviorContinuousML": {
