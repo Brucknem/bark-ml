@@ -7,9 +7,32 @@ from typing import Tuple
 # BARK-ML imports
 from bark_ml.library_wrappers.lib_tf2rl.load_save_utils import *
 from bark_ml.library_wrappers.lib_tf2rl.normalization_utils import normalize
+from bark_ml.observers.nearest_state_observer import NearestAgentsObserver
 
 # TF2RL imports
 from tf2rl.experiments.utils import load_trajectories
+
+
+def GetFeatureSpace(env):
+    env.reset()
+
+    observer_normalized = NearestAgentsObserver()
+    observer_not_normalized = NearestAgentsObserver()
+    observer_not_normalized._NormalizationEnabled = False
+    observer_normalized.Reset(env._world)
+    observer_not_normalized.Reset(env._world)
+
+    space = list(np.array([
+        env._observer._world_x_range,
+        env._observer._world_y_range,
+        env._observer._ThetaRange,
+        env._observer._VelocityRange
+        ] * (env._observer._max_num_vehicles + 1)).transpose())
+    class FeatureSpace:
+        def __init__(self, high, low):
+            self.high = high
+            self.low = low
+    return FeatureSpace(high=space[1], low=space[0])
 
 def load_expert_trajectories(dirname: str, normalize_features=False, env=None, subset_size = -1) -> (dict, float, int):
     """Loads all found expert trajectories files in the directory.
@@ -25,7 +48,7 @@ def load_expert_trajectories(dirname: str, normalize_features=False, env=None, s
         float: The average number of trajectory points per trajectory
         int: The number of loaded trajectories
     """
-    joblib_files = list_files_in_dir(os.path.expanduser(dirname), file_ending='.jblb')
+    joblib_files = list_files_in_dir(dirname, file_ending='.jblb')
 
     if subset_size > len(joblib_files):
         raise ValueError(f'Found {len(joblib_files)} expert trajectories. {subset_size} requested. Aborting!')
@@ -40,6 +63,7 @@ def load_expert_trajectories(dirname: str, normalize_features=False, env=None, s
 
     if normalize_features:
         assert env is not None, "if normalization is used the environment has to be provided."
+        feature_space = GetFeatureSpace(env)
         for key in ['obses', 'next_obses']:
             expert_trajectories[key] = normalize(
                 feature=expert_trajectories[key],

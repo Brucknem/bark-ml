@@ -89,7 +89,8 @@
     "memory_resource": "cpp",
     "dense": "cpp",
     "__functional_03": "cpp",
-    "*.ipp": "cpp"
+    "*.ipp": "cpp",
+    "rope": "cpp"
   },
   "python.pythonPath": "bark_ml/python_wrapper/venv/bin/python",
   "workbench.colorCustomizations": {
