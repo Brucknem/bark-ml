@@ -16,7 +16,7 @@ def GetBounds(env):
         env._observer._VelocityRange
         ] * (env._observer._max_num_vehicles + 1)).transpose())
 
-def load_expert_trajectories(dirname: str, normalize_features=False, sac=False, env=None, subset_size = -1) -> (dict, float, int):
+def load_expert_trajectories(dirname: str, normalize_features=False, sac=False, load_normalized=True, env=None, subset_size = -1) -> (dict, float, int):
     """Loads all found expert trajectories files in the directory.
 
     Args:
@@ -39,7 +39,14 @@ def load_expert_trajectories(dirname: str, normalize_features=False, sac=False, 
         indices = np.random.choice(len(joblib_files), subset_size, replace=False)
         joblib_files = np.array(joblib_files)[indices]
 
-    expert_trajectories = load_trajectories(joblib_files)
+    expert_trajectories = load_trajectories(joblib_files, load_normalized=load_normalized)
+    for i in range(1, len(expert_trajectories['obses'])):
+        obses = expert_trajectories['obses'][i]
+        next_obses = expert_trajectories['next_obses'][i-1]
+        if not np.allclose(obses, next_obses):
+            print(obses)
+            print(next_obses)
+            # assert np.allclose(obses, next_obses), "obs and next_obs do NOT match!"
     if not expert_trajectories:
         raise ValueError(f"Could not find valid expert trajectories in {dirname}.")
     
