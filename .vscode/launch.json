@@ -270,7 +270,7 @@
 				"request": "launch",
 				"program": "${workspaceFolder}/examples/tfa.py",
 				"console": "integratedTerminal",
-				"args": ["--mode=visualize", "--output_dir=~/Repositories/bark-ml/large_data_store/expert_trajectories/sac/merging", "--num_episodes=10000" ],
+				"args": ["--mode=visualize", "--output_dir=/Users/Marcel/Repositories/gail-4-bark/large_data_store/pretrained_agents/sac/merging_mine2", "--num_episodes=5" ],
 				"env": {
 					"PYTHONPATH": "${workspaceFolder}/bazel-bin/examples/tfa.runfiles/:${workspaceFolder}/bazel-bin/examples/tfa.runfiles/bark_project/:${workspaceFolder}/bazel-bin/examples/tfa.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/examples/tfa.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/examples/tfa.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/examples/tfa.runfiles/com_github_interaction_dataset_interaction_dataset/python/:"
 				}
