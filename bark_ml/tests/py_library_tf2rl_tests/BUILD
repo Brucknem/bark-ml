@@ -56,7 +56,7 @@ py_test(
         ],
     imports = ["../../external/bark_project/bark/python_wrapper/"],
     deps = [
-            "//bark_ml/tests/py_library_tf2rl_tests:base_tests",
+            "//bark_ml/tests/py_library_tf2rl_tests:simulation_based_tests",
             "@com_github_keiohta_tf2rl",
             "//bark_ml/library_wrappers/lib_tf2rl:load_expert_trajectories",
             "@bark_project//bark/runtime:runtime",

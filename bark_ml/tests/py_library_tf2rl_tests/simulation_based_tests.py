@@ -50,16 +50,8 @@ class SimulateScenarioTests(SimulationBasedTests):
         for agent_id in range(63, 69):
             self.assertIn(agent_id, self.expert_trajectories)
             agent_expert_trajectories = self.expert_trajectories[agent_id]
-            for key in ['obs', 'time', 'wheelbase']:
-                self.assertIn(key, agent_expert_trajectories)
-                assert len(agent_expert_trajectories[key]) == 269
-
-            for wheelbase in agent_expert_trajectories['wheelbase']:
-                assert wheelbase == 2.7
-
-            times = agent_expert_trajectories['time']
-            for i in range(1, len(times)):
-                self.assertAlmostEqual(times[i] - times[i - 1], self.sim_time_step / 1000, delta=1e-5)
+            self.assertIn('obs', agent_expert_trajectories)
+            assert len(agent_expert_trajectories['obs']) == 269
 
 
 class MeasureWorldTests(SimulationBasedTests):
@@ -152,15 +144,7 @@ class GenerateExpertTrajectoriesForScenarioTests(SimulationBasedTests):
         for agent_id in self.expert_trajectories:
             actions = self.expert_trajectories[agent_id]['act']
             assert len(actions) == len(self.expert_trajectories[agent_id]['obs'])
-            assert len(actions[0]) == 2
-
-            dones = self.expert_trajectories[agent_id]['done']
-            for i in range(len(dones) - 1):
-                dones[i] == 0
-            
-            dones[-1] = 1
-        
-        print('end')
+            assert len(actions[0]) == 2        
 
 
 class GenerateAndStoreExpertTrajectories(SimulationBasedTests):

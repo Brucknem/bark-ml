@@ -293,7 +293,7 @@ def simulate_scenario(param_server: ParameterServer, sim_time_step: float, rende
 
     # Run the scenario in a loop
     world_state = scenario.GetWorldState()
-    for i in range(0, sim_steps + 1):
+    for i in range(0, sim_steps):
         if i % 25 == 0:
             print(f"Simulated {i}/{sim_steps} timesteps.")
         if viewer:
@@ -341,8 +341,6 @@ def generate_expert_trajectories_for_scenario(param_server: ParameterServer, sim
             current_time = agent_trajectory["time"][i]
             next_time = agent_trajectory["time"][i + 1]
 
-            expert_trajectories[agent_id]["done"].append(0)
-
             current_obs = []
             # if i == 0:
             #     current_obs = agent_trajectory["obs"][i:i + 2]
@@ -358,7 +356,6 @@ def generate_expert_trajectories_for_scenario(param_server: ParameterServer, sim
         # add zeros depending on the action-state size
         expert_trajectories[agent_id]["act"].append(
             [0] * len(expert_trajectories[agent_id]["act"][0]))
-        expert_trajectories[agent_id]["done"].append(1)
 
         assert len(expert_trajectories[agent_id]["obs_norm"]
                    ) == len(expert_trajectories[agent_id]["act"])
@@ -366,8 +363,6 @@ def generate_expert_trajectories_for_scenario(param_server: ParameterServer, sim
                    ) == len(expert_trajectories[agent_id]["obs"])
         assert len(expert_trajectories[agent_id]["obs_norm"]
                    ) == len(expert_trajectories[agent_id]["time"])
-        assert len(expert_trajectories[agent_id]["obs_norm"]
-                   ) == len(expert_trajectories[agent_id]["done"])
     
     return expert_trajectories
 

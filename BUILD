@@ -28,6 +28,7 @@ test_suite(
     "//bark_ml/tests/py_library_tf2rl_tests:py_gail_training_tests",
     "//bark_ml/tests/py_library_tf2rl_tests:compare_trajectories_tests",
     "//bark_ml/tests/py_library_tf2rl_tests:normalize_on_merging_blueprint_tests",
+    "//bark_ml/tests/py_library_tf2rl_tests:normalize_interaction_dataset_trajectories_tests",
   ]
 )
 

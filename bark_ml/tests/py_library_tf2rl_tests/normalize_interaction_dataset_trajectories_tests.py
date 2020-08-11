@@ -34,6 +34,9 @@ from bark_ml.library_wrappers.lib_tf2rl.runners.gail_runner import GAILRunner
 from bark_ml.library_wrappers.lib_tf_agents.agents.sac_agent import BehaviorSACAgent
 from bark_ml.library_wrappers.lib_tf_agents.runners.sac_runner import SACRunnerGenerator
 
+from bark_ml.library_wrappers.lib_tf2rl.generate_expert_trajectories import store_expert_trajectories, create_parameter_servers_for_scenarios, simulate_scenario
+from base_tests import tracks_folder, map_file, known_key
+
 class NormalizeInteractionDatasetTest(unittest.TestCase):
     """Tests for the normalization of expert trajectories on the merging blueprint.
     """
@@ -41,7 +44,19 @@ class NormalizeInteractionDatasetTest(unittest.TestCase):
     def setUp(self):
         """Setup
         """
-        super().setUp()
+        param_servers = create_parameter_servers_for_scenarios(
+            map_file, tracks_folder)
+        self.test_agent_id = 31
+        param_server = param_servers[known_key]
+        param_server["Scenario"]["Generation"]["InteractionDatasetScenarioGeneration"]["TrackIds"] = [self.test_agent_id]
+        param_server["Scenario"]["Generation"]["InteractionDatasetScenarioGeneration"]["StartTs"] = 118900
+        param_server["Scenario"]["Generation"]["InteractionDatasetScenarioGeneration"]["EndTs"] = 129400
+        param_server["Scenario"]["Generation"]["InteractionDatasetScenarioGeneration"]["EgoTrackId"] = self.test_agent_id
+        param_server = param_server
+        sim_time_step = 200
+        self.expert_trajectories = simulate_scenario(
+            param_server, sim_time_step=sim_time_step)
+
         self.params = ParameterServer(filename="bark_ml/tests/py_library_tf2rl_tests/data/params.json")
         bp = ContinuousMergingBlueprint(self.params,
                                         number_of_senarios=10,
@@ -50,26 +65,8 @@ class NormalizeInteractionDatasetTest(unittest.TestCase):
                                 render=False)
         self.wrapped_env = TF2RLWrapper(self.env, 
                         normalize_features=True)
+        
     
-    def test_lol(self):
-        print('lol')
-
-    # def generate_test_trajectory(self):
-    #     """Generates a test trajectory from a SAC agent
-    #     """
-    #     sac_agent = BehaviorSACAgent(environment=self.env,
-    #                                 params=self.params)
-    #     self.env.ml_behavior = sac_agent
-    #     runner = SACRunnerGenerator(params=self.params,
-    #                         environment=self.env,
-    #                         agent=sac_agent)
-    #     expert_trajectories = runner.GenerateExpertTrajectories(num_trajectories=1, render=False)
-    #     dirname = "test_expert_trajectories"
-    #     Path(dirname).mkdir(parents=True, exist_ok=True)
-    #     filename = os.path.join(dirname, "test_expert_trajectory.jblb")
-    #     joblib.dump(expert_trajectories[0], filename)
-    #     return dirname
-
     # def compare_trajectories(self, raw_trajectories, expert_trajectories):
     #     """Compares two trajectories
     #     """
@@ -84,29 +81,33 @@ class NormalizeInteractionDatasetTest(unittest.TestCase):
     #             print('*' * 80)
     #             self.assertAlmostEqual(value, expert_trajectories['obses'][i][j], places=2)
 
-    # def test_normalization_of_sac_expert_trajectories_on_merging_blueprint_with_generate(self):
-    #     """Tests if expert trajectories generated from the SAC agent on the merging blueprint can be normalized correctly.
-    #     """
-    #     # Generate
-    #     dirname = self.generate_test_trajectory()
-    #     joblib_files = list_files_in_dir(dirname, file_ending='.jblb')
+    def test_normalization_of_interaction_dataset_expert_trajectories_on_merging_blueprint_with_generate(self):
+        """Tests if expert trajectories generated from the SAC agent on the merging blueprint can be normalized correctly.
+        """
+        # Generate
+        self.filenames = store_expert_trajectories(
+            'map', 'track', 'test_interaction_dataset_trajectories', self.expert_trajectories)
+        dirname = self.filenames[0].rsplit('/', 1)[0]
+        joblib_files = list_files_in_dir(dirname, file_ending='.jblb')
         
-    #     # Load raw
-    #     raw_trajectories = joblib.load(joblib_files[0])
-    #     for i in range(len(raw_trajectories['obs_norm'])):
-    #         raw_trajectories['obs_norm'][i] = raw_trajectories['obs_norm'][i] * 2. - 1.
+        # Load raw
+        # TODO Velocities are in range 0 - 3, whereas they are in range 5 - 9 when using a SAC agent
+        # TODO Open bark_ml/tests/py_library_tf2rl_tests/data/example_sac_trajectory.png
+        raw_trajectories = joblib.load(joblib_files[0])
+        # for i in range(len(raw_trajectories['obs_norm'])):
+        #     raw_trajectories['obs_norm'][i] = raw_trajectories['obs_norm'][i] * 2. - 1.
 
-    #     # Load normalized
-    #     expert_trajectories, avg_trajectory_length, num_trajectories = load_expert_trajectories(dirname,
-    #         normalize_features=True,
-    #         env=self.env
-    #         ) 
+        # Load normalized
+        expert_trajectories, avg_trajectory_length, num_trajectories = load_expert_trajectories(dirname,
+            normalize_features=True,
+            env=self.env
+            ) 
 
-    #     # Compare
-    #     self.compare_trajectories(raw_trajectories, expert_trajectories)
+        # Compare
+        self.compare_trajectories(raw_trajectories, expert_trajectories)
         
-    #     import shutil
-    #     shutil.rmtree(dirname, ignore_errors=True)
+        import shutil
+        shutil.rmtree(dirname, ignore_errors=True)
 
 if __name__ == '__main__':
     unittest.main()
