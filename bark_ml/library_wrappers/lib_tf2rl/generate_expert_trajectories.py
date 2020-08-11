@@ -280,6 +280,7 @@ def simulate_scenario(param_server: ParameterServer, sim_time_step: float, rende
 
     param_server["ML"]["StateObserver"]["MaxNumAgents"] = 3
 
+    # TODO Replace these with the C++ NearestObserver
     observer = NearestAgentsObserver(param_server)
     observer_not_normalized = NearestAgentsObserver(param_server)
     observer_not_normalized._NormalizationEnabled = False
@@ -418,6 +419,7 @@ def main_function(argv: list):
     param_servers = create_parameter_servers_for_scenarios(
         map_file, tracks_dir)
 
+    # TODO maybe make this a cli flag
     sim_time_step = 200
     for map_file, track in param_servers.keys():
         generate_and_store_expert_trajectories(map_file, track, expert_trajectories_path, param_servers[(
