@@ -138,11 +138,16 @@ class GenerateExpertTrajectoriesForScenarioTests(SimulationBasedTests):
     Tests: generate_expert_trajectories_for_scenario
     """
 
+    def setUp(self):
+        """Setup
+        """
+        super().setUp()
+        self.expert_trajectories = generate_expert_trajectories_for_scenario(self.param_server, self.sim_time_step)
+
     def test_generate_expert_trajectories_for_scenario(self):
         """
         Test: generate_expert_trajectories_for_scenario
         """
-        self.expert_trajectories = generate_expert_trajectories_for_scenario(self.param_server, self.sim_time_step)
 
         for agent_id in self.expert_trajectories:
             actions = self.expert_trajectories[agent_id]['act']

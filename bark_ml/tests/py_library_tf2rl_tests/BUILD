@@ -42,6 +42,33 @@ py_test(
 )
 
 py_test(
+    name = "normalize_interaction_dataset_trajectories_tests",
+    srcs = [ "normalize_interaction_dataset_trajectories_tests.py"],
+    data = [ 
+        "//bark_ml/tests/py_library_tf2rl_tests/data:generate_expert_trajectories_tests_data",
+        "@bark_project//bark/python_wrapper:core.so",
+        "//bark_ml/tests/py_library_tf2rl_tests/gail_data",
+        "//bark_ml/observers",
+        "@com_github_gail_4_bark_large_data_store",
+        ],
+    imports = ["../../external/bark_project/bark/python_wrapper/"],
+    deps = [
+            "//bark_ml/tests/py_library_tf2rl_tests:base_tests",
+            "@com_github_keiohta_tf2rl",
+            "//bark_ml/library_wrappers/lib_tf2rl:load_expert_trajectories",
+            "@bark_project//bark/runtime:runtime",
+            "//bark_ml/environments:single_agent_runtime",
+            "//bark_ml/environments:blueprints",
+            "//bark_ml/library_wrappers/lib_tf2rl",
+            "//bark_ml/library_wrappers/lib_tf_agents/runners",
+            "//bark_ml/library_wrappers/lib_tf_agents/agents",
+            "//bark_ml/library_wrappers/lib_tf_agents:tfa_wrapper",
+            ],
+    visibility = ["//visibility:public"],
+    size = "small"
+)
+
+py_test(
     name = "load_save_utils_tests",
     srcs = ["load_save_utils_tests.py"],
     deps = ["//bark_ml/library_wrappers/lib_tf2rl:load_save_utils"],
