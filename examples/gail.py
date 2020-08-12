@@ -52,11 +52,11 @@ def run_configuration(argv):
       subset_size=params['ML']['ExpertTrajectories']['subset_size']
       )
     velocity_info = {} 
-    velocity['mean'] = np.mean(np.mean(expert_trajectories['obses'], axis=0)[3::4])
-    velocity['max'] = np.max(np.mean(expert_trajectories['obses'], axis=0)[3::4])
-    velocity['min'] = np.min(np.mean(expert_trajectories['obses'], axis=0)[3::4])
-    print('Overall mean velocity of {} will be used as desired velocity.'.format(velocity['mean']))
-    params['BehaviorIDMClassic']['DesiredVelocity'] = velocity['mean']
+    velocity_info['mean'] = np.mean(np.mean(expert_trajectories['obses'], axis=0)[3::4])
+    velocity_info['max'] = np.max(np.mean(expert_trajectories['obses'], axis=0)[3::4])
+    velocity_info['min'] = np.min(np.mean(expert_trajectories['obses'], axis=0)[3::4])
+    print('Overall mean velocity of {} will be used as desired velocity.'.format(velocity_info['mean']))
+    params['BehaviorIDMClassic']['DesiredVelocity'] = velocity_info['mean']
   ################################ Test ################################ 
 
   # create environment
