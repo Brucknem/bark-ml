@@ -44,6 +44,21 @@ def run_configuration(argv):
   # params["ML"]["GAILRunner"]["tf2rl"]["logdir"] = os.path.join(params["ML"]["GAILRunner"]["tf2rl"]["logdir"], "20200807T121018.454776_DDPG_GAIL")
   # params["ML"]["GAILRunner"]["tf2rl"]["model_dir"] = os.path.join(params["ML"]["GAILRunner"]["tf2rl"]["model_dir"], "20200807T121018.454776_DDPG_GAIL")
 
+  ################################ Test ################################ 
+  if FLAGS.mode != 'visualize':
+    expert_trajectories, avg_trajectory_length, num_trajectories = load_expert_trajectories(params['ML']['ExpertTrajectories']['expert_path_dir'],
+      normalize_features=False,
+      env=None,
+      subset_size=params['ML']['ExpertTrajectories']['subset_size']
+      )
+    velocity_info = {} 
+    velocity['mean'] = np.mean(np.mean(expert_trajectories['obses'], axis=0)[3::4])
+    velocity['max'] = np.max(np.mean(expert_trajectories['obses'], axis=0)[3::4])
+    velocity['min'] = np.min(np.mean(expert_trajectories['obses'], axis=0)[3::4])
+    print('Overall mean velocity of {} will be used as desired velocity.'.format(velocity['mean']))
+    params['BehaviorIDMClassic']['DesiredVelocity'] = velocity['mean']
+  ################################ Test ################################ 
+
   # create environment
   blueprint = params['World']['blueprint']
   if blueprint == 'merging':
