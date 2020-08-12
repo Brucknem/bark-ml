@@ -1,29 +1,18 @@
-import os
-import os.path
-import argparse
-import pickle
-import matplotlib.pyplot as plt
-from pathlib import Path
-from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor
-import multiprocessing
 import numpy as np
 from typing import Tuple
 import joblib
+
 from IPython.display import clear_output
 
 import math
 import gym
 from absl import app
 from absl import flags
+import matplotlib.pyplot as plt
 
 # Bark
-from bark.runtime.scenario.scenario_generation.interaction_dataset_scenario_generation import \
-    InteractionDatasetScenarioGeneration
 from bark.runtime.commons.parameters import ParameterServer
 from bark.runtime.viewer.matplotlib_viewer import MPViewer
-from bark.runtime.viewer.video_renderer import VideoRenderer
-
 from bark.runtime.viewer.video_renderer import VideoRenderer
 from bark.runtime.scenario.scenario import Scenario
 
@@ -31,6 +20,7 @@ from bark.runtime.scenario.scenario import Scenario
 from bark_ml.observers.nearest_state_observer import NearestAgentsObserver
 from bark_ml.observers.observer import StateObserver
 from bark_ml.library_wrappers.lib_tf2rl.load_save_utils import *
+from bark_ml.library_wrappers.lib_tf2rl.scenario_generator_wrapper import *
 
 FLAGS = flags.FLAGS
 flags.DEFINE_string(
@@ -52,84 +42,6 @@ flags.DEFINE_string(
 flags.DEFINE_enum(
     "renderer", "", ["", "matplotlib", "pygame"],
     "The renderer to use during replay of the interaction dataset.")
-
-
-def get_track_files(tracks_dir: str) -> list:
-  """Extracts all track file names in the given directory.
-
-  Args:
-      tracks_dir (str): The directory to search for track files
-
-  Returns:
-      list: The track files
-  """
-  return list_files_in_dir(tracks_dir, ".csv")
-
-
-def create_parameter_servers_for_scenarios(
-        map_file: str, tracks_dir: str) -> dict:
-  """Generate a parameter server for every track file in the given directory.
-
-  Args:
-      map_file (str): The path of the map_file
-      tracks_dir (str): The directory containing the track files
-
-  Raises:
-      ValueError: Map is not in Xodr format.
-
-  Returns:
-      dict: The parameter servers by mao and track files.
-  """
-  import pandas as pd
-
-  if not map_file.endswith(".xodr"):
-    raise ValueError(
-        f"Map file has to be in Xodr file format. Given: {map_file}")
-
-  tracks = get_track_files(tracks_dir)
-
-  param_servers = {}
-  for track in tracks:
-    df = pd.read_csv(track)
-    track_ids = df.track_id.unique()
-    start_ts = df.timestamp_ms.min()
-    end_ts = df.timestamp_ms.max()
-    num_rows = len(df.index)
-
-    param_server = ParameterServer()
-    param_server["Scenario"]["Generation"][
-        "InteractionDatasetScenarioGeneration"]["MapFilename"] = map_file
-    param_server["Scenario"]["Generation"][
-        "InteractionDatasetScenarioGeneration"]["TrackFilename"] = track
-    param_server["Scenario"]["Generation"][
-        "InteractionDatasetScenarioGeneration"]["TrackIds"] = list(track_ids)
-    param_server["Scenario"]["Generation"][
-        "InteractionDatasetScenarioGeneration"]["StartTs"] = start_ts
-    param_server["Scenario"]["Generation"][
-        "InteractionDatasetScenarioGeneration"]["EndTs"] = end_ts
-    param_server["Scenario"]["Generation"][
-        "InteractionDatasetScenarioGeneration"]["EgoTrackId"] = track_ids[0]
-    map_id = map_file.split("/")[-1].replace(".xodr", "")
-    track_id = track.split("/")[-1].replace(".csv", "")
-    param_servers[map_id, track_id] = param_server
-
-  return param_servers
-
-
-def create_scenario(param_server: ParameterServer) -> Tuple[Scenario, float, float]:
-  """Creates a bark scenario based on the given parameter server.
-
-  Args:
-      param_server (ParameterServer): The parameter server
-
-  Returns:
-      Tuple[Scenario, float, float]: The bark scenario, the start timestamp, the end timestamp
-  """
-  scenario_generation = InteractionDatasetScenarioGeneration(
-      num_scenarios=1, random_seed=0, params=param_server)
-  return (scenario_generation.get_scenario(0),
-          param_server["Scenario"]["Generation"]["InteractionDatasetScenarioGeneration"]["StartTs"],
-          param_server["Scenario"]["Generation"]["InteractionDatasetScenarioGeneration"]["EndTs"])
 
 
 def calculate_action(
@@ -235,6 +147,7 @@ def store_expert_trajectories(
       expert_trajectories_path (str): The output path
       expert_trajectories (dict): The observations and actions
 
+        # the unwrapped env has to be used, since that contains the unnormalized spaces.
   Returns:
       list: The final filenames of the stored expert trajectories
   """
@@ -415,6 +328,28 @@ def generate_and_store_expert_trajectories(map_file: str, track: str,
   return filenames
 
 
+def simulate_single_agent(argv: list):
+  param_server = ParameterServer(filename="bark_ml/library_wrappers/lib_tf2rl/params/generate_params.json")
+
+  generation_params = param_server["Scenario"]["Generation"]['InteractionDatasetScenarioGeneration']
+  sim_step_time = generation_params["StepTimeMS", "Step-time used in simulation", 100]
+
+  renderer = param_server["Scenario"]["Generation"]["Renderer", "The renderer", "pygame"]
+  output_dir = param_server["Scenario"]["Generation"]["OutputDirectory", "The output directory", "expert_trajectories"]
+
+  def split_name(name: str):
+    splitted = name.split('/')[-1]
+    splitted = splitted.split('.')[0]
+    return splitted
+
+  map_file = split_name(generation_params["MapFilename"])
+  track_file = split_name(generation_params["TrackFilename"])
+
+  generate_and_store_expert_trajectories(
+        map_file, track_file, output_dir,
+        param_server,
+        sim_step_time, renderer)
+
 def main_function(argv: list):
   """The main function.
 
@@ -440,7 +375,7 @@ def main_function(argv: list):
   param_servers = create_parameter_servers_for_scenarios(
       map_file, tracks_dir)
 
-  sim_time_step = 200
+  sim_time_step = 100
   for map_file, track in param_servers.keys():
     generate_and_store_expert_trajectories(
         map_file, track, expert_trajectories_path,
@@ -449,7 +384,7 @@ def main_function(argv: list):
 
 
 if __name__ == "__main__":
-  flags.mark_flag_as_required("map_file")
-  flags.mark_flag_as_required("tracks_dir")
-  flags.mark_flag_as_required("expert_trajectories_path")
-  app.run(main_function)
+  # flags.mark_flag_as_required("map_file")
+  # flags.mark_flag_as_required("tracks_dir")
+  # flags.mark_flag_as_required("expert_trajectories_path")
+  app.run(simulate_single_agent)

@@ -70,8 +70,8 @@ py_test(
 )
 
 py_test(
-  name = "gail",
-  srcs = ["gail.py"],
+  name = "gail_blueprints",
+  srcs = ["gail_blueprints.py"],
   data = ["@bark_project//bark/python_wrapper:core.so",
           "//bark_ml:generate_core",
           "//examples/example_params",
@@ -79,6 +79,23 @@ py_test(
           ],
     imports = ["../external/bark_project/bark/python_wrapper/"],
   deps = [
+    "//bark_ml/environments:single_agent_runtime",
+    "//bark_ml/environments:blueprints",
+    "//bark_ml/library_wrappers/lib_tf2rl",
+  ]
+)
+
+py_test(
+  name = "gail_interaction_dataset",
+  srcs = ["gail_interaction_dataset.py"],
+  data = ["@bark_project//bark/python_wrapper:core.so",
+          "//bark_ml:generate_core",
+          "//examples/example_params",
+          "@com_github_gail_4_bark_large_data_store"
+          ],
+    imports = ["../external/bark_project/bark/python_wrapper/"],
+  deps = [
+    "//bark_ml/library_wrappers/lib_tf2rl:scenario_generator_wrapper",
     "//bark_ml/environments:single_agent_runtime",
     "//bark_ml/environments:blueprints",
     "//bark_ml/library_wrappers/lib_tf2rl",

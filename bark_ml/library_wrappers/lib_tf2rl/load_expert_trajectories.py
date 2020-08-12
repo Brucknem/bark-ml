@@ -49,7 +49,10 @@ def load_expert_trajectories(
       float: The average number of trajectory points per trajectory
       int: The number of loaded trajectories
   """
-  joblib_files = list_files_in_dir(dirname, file_ending='.jblb')
+  if Path(dirname).is_dir():
+    joblib_files = list_files_in_dir(dirname, file_ending='.jblb')
+  else:
+    joblib_files = [dirname]
 
   if subset_size > len(joblib_files):
     raise ValueError(

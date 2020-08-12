@@ -159,13 +159,13 @@
 			}
 		},
 		{
-			"name": "Python: utils/tests/test_generate_launch_configuration",
+			"name": "Python: utils/tests/generate_launch_configuration_test",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/utils/tests/test_generate_launch_configuration.py",
+			"program": "${workspaceFolder}/utils/tests/generate_launch_configuration_test.py",
 			"console": "integratedTerminal",
 			"env": {
-				"PYTHONPATH": "${workspaceFolder}/bazel-bin/utils/tests/test_generate_launch_configuration.runfiles/bark_ml/utils/python:"
+				"PYTHONPATH": "${workspaceFolder}/bazel-bin/utils/tests/generate_launch_configuration_test.runfiles/bark_ml/utils/python:"
 			}
 		},   
 		{
@@ -176,6 +176,17 @@
 			"console": "integratedTerminal",
 			"env": {
 				"PYTHONPATH": "${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_project/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/com_github_interaction_dataset_interaction_dataset/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/com_github_keiohta_tf2rl"
+			}
+		},
+		{
+			"name": "Python: examples/gail_interaction_dataset",
+			"type": "python",
+			"request": "launch",
+			"program": "${workspaceFolder}/examples/gail_interaction_dataset.py",
+			"console": "integratedTerminal",
+			"args": ["--mode=train"],
+			"env": {
+				"PYTHONPATH": "${workspaceFolder}/bazel-bin/examples/gail_interaction_dataset.runfiles/:${workspaceFolder}/bazel-bin/examples/gail_interaction_dataset.runfiles/bark_project/:${workspaceFolder}/bazel-bin/examples/gail_interaction_dataset.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/examples/gail_interaction_dataset.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/examples/gail_interaction_dataset.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/examples/gail_interaction_dataset.runfiles/com_github_interaction_dataset_interaction_dataset/python/:${workspaceFolder}/bazel-bin/examples/gail_interaction_dataset.runfiles/com_github_keiohta_tf2rl"
 			}
 		},
 	]

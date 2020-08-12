@@ -14,7 +14,7 @@ test_suite(
     "//bark_ml/tests:py_observer_tests",
     "//bark_ml/tests:py_evaluator_tests",
     "//bark_ml/tests:py_behavior_tests",
-    "//utils/tests:test_generate_launch_configuration",
+    "//utils/tests:generate_launch_configuration_test",
   ]
 )
 
@@ -50,7 +50,7 @@ test_suite(
     "//examples:discrete_env",
     "//examples:tfa",
     "//examples:tfa_generate",
-    "//examples:gail",
+    "//examples:gail_blueprints",
   ]
 )
 

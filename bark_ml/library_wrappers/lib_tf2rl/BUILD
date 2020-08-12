@@ -57,13 +57,37 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
+py_library(
+  name = "scenario_generator_wrapper",
+  srcs = [
+    "scenario_generator_wrapper.py",
+    ],
+  deps = ["//bark_ml/library_wrappers/lib_tf2rl:load_save_utils",
+          "@bark_project//bark/runtime/commons:parameters",
+          "@bark_project//bark/runtime/commons:xodr_parser",
+          "@bark_project//bark/runtime/scenario/scenario_generation:scenario_generation",
+          "@bark_project//bark/runtime:runtime",
+    ],
+  data = [
+          "@bark_project//bark/python_wrapper:core.so",
+          "//bark_ml:generate_core"
+          ],
+  visibility = ["//visibility:public"]
+)
+
+filegroup (
+  name = "generate_params",
+  srcs = glob(["params/*.json"])
+)
 
 py_binary(
   name = "generate_expert_trajectories",
   srcs = [
     "generate_expert_trajectories.py",
     ],
-  deps = ["//bark_ml/library_wrappers/lib_tf2rl:load_save_utils",
+  deps = [
+          "scenario_generator_wrapper",
+          "//bark_ml/library_wrappers/lib_tf2rl:load_save_utils",
           "@bark_project//bark/runtime/commons:parameters",
           "@bark_project//bark/runtime/commons:xodr_parser",
           "@bark_project//bark/runtime/viewer:matplotlib_viewer",
@@ -73,6 +97,7 @@ py_binary(
           "@bark_project//bark/runtime:runtime",
           "//bark_ml/observers:observers"],
   data = [
+          "generate_params",
           "@bark_project//bark/python_wrapper:core.so",
           "//bark_ml:generate_core"
           ],
