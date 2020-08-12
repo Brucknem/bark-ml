@@ -67,7 +67,7 @@ def run_configuration(argv):
   observer = NearestAgentsObserver(params)
   evaluator = GoalReached(params, ego_agent_id)
   env = SingleAgentRuntime(scenario_generator=scenario_generation,
-                           render=False,
+                           render=True,
                            step_time=sim_step_time,
                            viewer=viewer,
                            ml_behavior=ml_behavior,

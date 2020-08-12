@@ -75,6 +75,11 @@ py_library(
   visibility = ["//visibility:public"]
 )
 
+filegroup (
+  name = "generate_params",
+  srcs = glob(["params/*.json"])
+)
+
 py_binary(
   name = "generate_expert_trajectories",
   srcs = [
@@ -92,6 +97,7 @@ py_binary(
           "@bark_project//bark/runtime:runtime",
           "//bark_ml/observers:observers"],
   data = [
+          "generate_params",
           "@bark_project//bark/python_wrapper:core.so",
           "//bark_ml:generate_core"
           ],

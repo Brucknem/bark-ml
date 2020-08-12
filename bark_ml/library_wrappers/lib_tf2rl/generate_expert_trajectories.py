@@ -328,6 +328,28 @@ def generate_and_store_expert_trajectories(map_file: str, track: str,
   return filenames
 
 
+def simulate_single_agent(argv: list):
+  param_server = ParameterServer(filename="bark_ml/library_wrappers/lib_tf2rl/params/generate_params.json")
+
+  generation_params = param_server["Scenario"]["Generation"]['InteractionDatasetScenarioGeneration']
+  sim_step_time = generation_params["StepTimeMS", "Step-time used in simulation", 100]
+
+  renderer = param_server["Scenario"]["Generation"]["Renderer", "The renderer", "pygame"]
+  output_dir = param_server["Scenario"]["Generation"]["OutputDirectory", "The output directory", "expert_trajectories"]
+
+  def split_name(name: str):
+    splitted = name.split('/')[-1]
+    splitted = splitted.split('.')[0]
+    return splitted
+
+  map_file = split_name(generation_params["MapFilename"])
+  track_file = split_name(generation_params["TrackFilename"])
+
+  generate_and_store_expert_trajectories(
+        map_file, track_file, output_dir,
+        param_server,
+        sim_step_time, renderer)
+
 def main_function(argv: list):
   """The main function.
 
@@ -362,7 +384,7 @@ def main_function(argv: list):
 
 
 if __name__ == "__main__":
-  flags.mark_flag_as_required("map_file")
-  flags.mark_flag_as_required("tracks_dir")
-  flags.mark_flag_as_required("expert_trajectories_path")
-  app.run(main_function)
+  # flags.mark_flag_as_required("map_file")
+  # flags.mark_flag_as_required("tracks_dir")
+  # flags.mark_flag_as_required("expert_trajectories_path")
+  app.run(simulate_single_agent)
