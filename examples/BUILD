@@ -70,8 +70,8 @@ py_test(
 )
 
 py_test(
-  name = "gail",
-  srcs = ["gail.py"],
+  name = "gail_blueprints",
+  srcs = ["gail_blueprints.py"],
   data = ["@bark_project//bark/python_wrapper:core.so",
           "//bark_ml:generate_core",
           "//examples/example_params",
