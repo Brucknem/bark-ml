@@ -51,7 +51,7 @@ py_test(
   ]
 )
 
-py_binary(
+py_test(
   name = "tfa_generate",
   srcs = ["tfa_generate.py"],
   data = ["@bark_project//bark/python_wrapper:core.so",
@@ -69,7 +69,7 @@ py_binary(
   ]
 )
 
-py_binary(
+py_test(
   name = "gail",
   srcs = ["gail.py"],
   data = ["@bark_project//bark/python_wrapper:core.so",
