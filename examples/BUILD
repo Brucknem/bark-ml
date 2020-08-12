@@ -51,7 +51,7 @@ py_test(
   ]
 )
 
-py_binary(
+py_test(
   name = "tfa_generate",
   srcs = ["tfa_generate.py"],
   data = ["@bark_project//bark/python_wrapper:core.so",
@@ -69,9 +69,25 @@ py_binary(
   ]
 )
 
-py_binary(
+py_test(
   name = "gail",
   srcs = ["gail.py"],
+  data = ["@bark_project//bark/python_wrapper:core.so",
+          "//bark_ml:generate_core",
+          "//examples/example_params",
+          "@com_github_gail_4_bark_large_data_store"
+          ],
+    imports = ["../external/bark_project/bark/python_wrapper/"],
+  deps = [
+    "//bark_ml/environments:single_agent_runtime",
+    "//bark_ml/environments:blueprints",
+    "//bark_ml/library_wrappers/lib_tf2rl",
+  ]
+)
+
+py_binary(
+  name = "calculate_mean_observations",
+  srcs = ["calculate_mean_observations.py"],
   data = ["@bark_project//bark/python_wrapper:core.so",
           "//bark_ml:generate_core",
           "//examples/example_params",
@@ -99,22 +115,5 @@ py_test(
     "//bark_ml/environments:blueprints",
     "//bark_ml/observers:observers",
     "//bark_ml/library_wrappers/lib_diadem:diadem"
-  ]
-)
-
-py_binary(
-  name = "unnormalization_check",
-  srcs = ["unnormalization_check.py"],
-  data = ["@bark_project//bark/python_wrapper:core.so",
-          "//bark_ml:generate_core",
-          "//examples/example_params:example_params"],
-    imports = ["../external/bark_project/bark/python_wrapper/"],
-  deps = [
-    "//bark_ml/environments:single_agent_runtime",
-    "//bark_ml/environments:blueprints",
-    "//bark_ml/library_wrappers/lib_tf_agents/agents:agents",
-    "//bark_ml/library_wrappers/lib_tf_agents/runners:runners",
-    "@com_github_keiohta_tf2rl",
-    "//bark_ml/library_wrappers/lib_tf2rl" 
   ]
 )

@@ -5,16 +5,6 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Python: examples/unnomalization_check",
-			"type": "python",
-			"request": "launch",
-			"program": "${workspaceFolder}/examples/unnormalization_check.py",
-			"console": "integratedTerminal",
-			"env": {
-				"PYTHONPATH": "${workspaceFolder}/bazel-bin/examples/unnormalization_check.runfiles/:${workspaceFolder}/bazel-bin/examples/unnormalization_check.runfiles/bark_project/:${workspaceFolder}/bazel-bin/examples/unnormalization_check.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/examples/unnormalization_check.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/examples/unnormalization_check.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/examples/unnormalization_check.runfiles/com_github_interaction_dataset_interaction_dataset/python/:${workspaceFolder}/bazel-bin/examples/unnormalization_check.runfiles/com_github_keiohta_tf2rl"
-			}
-		},
-		{
 			"name": "Python: bark_ml/tests/py_library_tf2rl_tests/py_gail_gym_training_tests",
 			"type": "python",
 			"request": "launch",
@@ -176,6 +166,26 @@
 			"console": "integratedTerminal",
 			"env": {
 				"PYTHONPATH": "${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_project/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/com_github_interaction_dataset_interaction_dataset/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_on_merging_blueprint_tests.runfiles/com_github_keiohta_tf2rl"
+			}
+		},   
+		{
+			"name": "Python: bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests",
+			"type": "python",
+			"request": "launch",
+			"program": "${workspaceFolder}/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.py",
+			"console": "integratedTerminal",
+			"env": {
+				"PYTHONPATH": "${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.runfiles/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.runfiles/bark_project/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.runfiles/com_github_interaction_dataset_interaction_dataset/python/:${workspaceFolder}/bazel-bin/bark_ml/tests/py_library_tf2rl_tests/normalize_interaction_dataset_trajectories_tests.runfiles/com_github_keiohta_tf2rl"
+			}
+		},
+		{
+			"name": "Python: examples/calculate_mean_observations",
+			"type": "python",
+			"request": "launch",
+			"program": "${workspaceFolder}/examples/calculate_mean_observations.py",
+			"console": "integratedTerminal",
+			"env": {
+				"PYTHONPATH": "${workspaceFolder}/bazel-bin/examples/calculate_mean_observations.runfiles/:${workspaceFolder}/bazel-bin/examples/calculate_mean_observations.runfiles/bark_project/:${workspaceFolder}/bazel-bin/examples/calculate_mean_observations.runfiles/bark_project/python/:${workspaceFolder}/bazel-bin/examples/calculate_mean_observations.runfiles/bark_ml/:${workspaceFolder}/bazel-bin/examples/calculate_mean_observations.runfiles/bark_ml/python/:${workspaceFolder}/bazel-bin/examples/calculate_mean_observations.runfiles/com_github_interaction_dataset_interaction_dataset/python/:${workspaceFolder}/bazel-bin/examples/calculate_mean_observations.runfiles/com_github_keiohta_tf2rl"
 			}
 		},
 	]

@@ -28,7 +28,8 @@ test_suite(
     "//bark_ml/tests/py_library_tf2rl_tests:py_gail_training_tests",
     "//bark_ml/tests/py_library_tf2rl_tests:compare_trajectories_tests",
     "//bark_ml/tests/py_library_tf2rl_tests:normalize_on_merging_blueprint_tests",
-  ]
+    "//bark_ml/tests/py_library_tf2rl_tests:calculate_action_tests",
+    ]
 )
 
 test_suite(
@@ -47,7 +48,9 @@ test_suite(
     "//examples:blueprint_config",
     "//examples:continuous_env",
     "//examples:discrete_env",
-    "//examples:tfa"
+    "//examples:tfa",
+    "//examples:tfa_generate",
+    "//examples:gail",
   ]
 )
 
