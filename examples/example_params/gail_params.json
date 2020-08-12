@@ -1,4 +1,28 @@
 {
+    "Scenario": {
+        "Name": "DR_DEU_Merging_MT\nvehicle_tracks_013.csv",
+        "Generation": {
+            "InteractionDatasetScenarioGeneration": {
+                "MapFilename": "/home/brucknem/Repositories/interaction_dataset/DR_DEU_Merging_MT/map/DR_DEU_Merging_MT_v01_shifted.xodr",
+                "TrackFilename": "/home/brucknem/Repositories/interaction_dataset/DR_DEU_Merging_MT/tracks/vehicle_tracks_013.csv",
+                "TrackIds": [
+                    63,
+                    64,
+                    65,
+                    66,
+                    67,
+                    68
+                ],
+                "StartTs": 232000,
+                "EndTs": 269000,
+                "EgoTrackId": 66,
+                "StepTime": 0.1,
+                "BehaviorModel": {
+                    "67": "BehaviorIDMClassic"
+                }
+            }
+        }
+    },
     "World": {
         "remove_agents_out_of_map": true,
         "blueprint": "merging"
@@ -70,7 +94,7 @@
             "AgentName": "gail_agent"
         },
         "ExpertTrajectories": {
-            "expert_path_dir": "../com_github_gail_4_bark_large_data_store/expert_trajectories/sac/merging",
+            "expert_path_dir": "../com_github_gail_4_bark_large_data_store/expert_trajectories/interaction_dataset/DR_DEU_Merging_MT_v01_shifted/single_scenario/vehicle_tracks_013_agentid66.jblb",
             "subset_size": -1
         },
         "GAILRunner": {
@@ -79,7 +103,7 @@
             "CollectionEpisodesPerStep": 1,
             "tf2rl": {
                 "max_steps": 200000,
-                "episode_max_steps": 100,
+                "episode_max_steps": 10000,
                 "n_experiments": 1,
                 "show_progress": false,
                 "save_model_interval": 100,

@@ -147,6 +147,7 @@ def store_expert_trajectories(
       expert_trajectories_path (str): The output path
       expert_trajectories (dict): The observations and actions
 
+        # the unwrapped env has to be used, since that contains the unnormalized spaces.
   Returns:
       list: The final filenames of the stored expert trajectories
   """
@@ -352,7 +353,7 @@ def main_function(argv: list):
   param_servers = create_parameter_servers_for_scenarios(
       map_file, tracks_dir)
 
-  sim_time_step = 200
+  sim_time_step = 100
   for map_file, track in param_servers.keys():
     generate_and_store_expert_trajectories(
         map_file, track, expert_trajectories_path,
